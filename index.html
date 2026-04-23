@@ -1573,6 +1573,17 @@ updateNavButtons();
 
 buildQuestionSteps();
 updateNavButtons();
+
+// Auto-resize: notify parent of content height
+function sendHeight() {
+  const height = document.body.scrollHeight;
+  window.parent.postMessage({ iframeHeight: height }, '*');
+}
+
+// Send height on load and whenever content changes
+window.addEventListener('load', sendHeight);
+const resizeObserver = new ResizeObserver(sendHeight);
+resizeObserver.observe(document.body);
 </script>
 </body>
 </html>
