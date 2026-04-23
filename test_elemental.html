@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Elemental — Productividad Elemental</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #0d0d0d;
+    --warm-white: #111111;
+    --dark: #f0f0f0;
+    --mid: #aaaaaa;
+    --light: #666666;
+    --accent: #E2ED80;
+    --accent-light: #252a10;
+    --fuego: #FFD4A8;
+    --fuego-light: #2a2218;
+    --tierra: #E2ED80;
+    --tierra-light: #252a10;
+    --agua: #ABE6E0;
+    --agua-light: #152a28;
+    --aire: #D4B8E0;
+    --aire-light: #221a2e;
+    --border: #2a2a2a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 60px 24px 40px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--dark);
+    margin-bottom: 12px;
+  }
+
+  header h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  header p {
+    font-size: 15px;
+    color: var(--mid);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .divider {
+    width: 48px;
+    height: 1px;
+    background: var(--accent);
+    margin: 24px auto;
+  }
+
+  /* INSTRUCTIONS BOX */
+  .instructions {
+    max-width: 680px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+
+  .instructions-box {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 36px;
+  }
+
+  .instructions-box h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 16px;
+    color: var(--dark);
+  }
+
+  .instructions-box p {
+    font-size: 14px;
+    color: var(--mid);
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+
+  .rules {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rule {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--dark);
+  }
+
+  .rule-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 680px;
+    margin: 0 auto 16px;
+    padding: 0 24px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-tag {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--mid);
+    font-style: italic;
+  }
+
+  /* QUESTIONS */
+  .questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .question-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    transition: border-color 0.2s;
+  }
+
+  .question-card.answered {
+    border-color: var(--accent-light);
+  }
+
+  .question-num {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--light);
+    margin-bottom: 10px;
+  }
+
+  .question-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    background: #1a1a1a;
+  }
+
+  .option:hover {
+    border-color: var(--accent);
+    background: #1a1f0a;
+  }
+
+  .option.selected {
+    border-color: var(--accent);
+    background: #1a1f0a;
+  }
+
+  .option input[type="radio"] {
+    display: none;
+  }
+
+  .option-letter {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--mid);
+    flex-shrink: 0;
+    transition: all 0.18s;
+    margin-top: 1px;
+  }
+
+  .option.selected .option-letter {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #1a1a1a;
+  }
+
+  .option-text {
+    font-size: 14px;
+    color: var(--dark);
+    line-height: 1.55;
+  }
+
+  /* SECTION 2 special */
+  .section-2 .question-card {
+    border-left: 3px solid var(--border);
+  }
+
+  .section-2 .question-card.answered {
+    border-left-color: var(--accent);
+  }
+
+  /* SUBMIT */
+  .submit-area {
+    max-width: 680px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .progress-text {
+    font-size: 13px;
+    color: var(--mid);
+    margin-bottom: 20px;
+  }
+
+  .progress-count {
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .btn-submit {
+    display: inline-block;
+    padding: 16px 48px;
+    background: var(--accent);
+    color: #1a1a1a;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-submit:hover {
+    background: #c8d960;
+    transform: translateY(-1px);
+  }
+
+  .btn-submit:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* RESULTS */
+  #results {
+    display: none;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+    animation: fadeIn 0.6s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .results-header h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 12px;
+  }
+
+  .results-header p {
+    font-size: 15px;
+    color: var(--mid);
+  }
+
+  /* SCORES */
+  .scores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 480px) {
+    .scores-grid { grid-template-columns: 1fr; }
+  }
+
+  .score-card {
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .score-card.fuego { background: var(--fuego-light); border: 1.5px solid #FFD4A8; }
+  .score-card.tierra { background: var(--tierra-light); border: 1.5px solid #E2ED80; }
+  .score-card.agua { background: var(--agua-light); border: 1.5px solid #ABE6E0; }
+  .score-card.aire { background: var(--aire-light); border: 1.5px solid #D4B8E0; }
+
+  .score-card.dominant {
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+
+  .score-badge {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+
+  .score-card.fuego .score-badge { color: var(--fuego); }
+  .score-card.tierra .score-badge { color: var(--tierra); }
+  .score-card.agua .score-badge { color: var(--agua); }
+  .score-card.aire .score-badge { color: var(--aire); }
+
+  .score-emoji { font-size: 2rem; margin-bottom: 6px; }
+
+  .score-element {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #f0f0f0;
+    margin-bottom: 8px;
+  }
+
+  .score-bar-wrap {
+    background: rgba(255,255,255,0.1);
+    border-radius: 50px;
+    height: 8px;
+    overflow: hidden;
+    margin: 10px 0 8px;
+  }
+
+  .score-bar {
+    height: 100%;
+    border-radius: 50px;
+    transition: width 1s ease;
+  }
+
+  .score-card.fuego .score-bar { background: var(--fuego); }
+  .score-card.tierra .score-bar { background: var(--tierra); }
+  .score-card.agua .score-bar { background: var(--agua); }
+  .score-card.aire .score-bar { background: var(--aire); }
+
+  .score-num {
+    font-size: 2rem;
+    font-weight: 300;
+    font-family: 'Poppins', sans-serif;
+    color: #f0f0f0;
+  }
+
+  .score-label {
+    font-size: 12px;
+    color: #888;
+  }
+
+  .dominant-tag, .desarrollo-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  .dominant-tag {
+    background: var(--accent);
+    color: #1a1a1a;
+  }
+
+  .desarrollo-tag {
+    background: #333;
+    color: #f0f0f0;
+  }
+
+  /* PROFILE RESULT */
+  .profile-result {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .profile-result h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--mid);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .profile-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+
+  .profile-tagline {
+    font-size: 14px;
+    color: var(--mid);
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  .profile-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    text-align: left;
+  }
+
+  @media (max-width: 480px) {
+    .profile-fields { grid-template-columns: 1fr; }
+  }
+
+  .profile-field {
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #1a1a1a;
+  }
+
+  .field-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 6px;
+  }
+
+  .field-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  /* RANGES TABLE */
+  .ranges-box {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+  }
+
+  .ranges-box h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 20px;
+  }
+
+  .ranges-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .ranges-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--light);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .ranges-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--dark);
+    vertical-align: top;
+  }
+
+  .ranges-table tr:last-child td { border-bottom: none; }
+
+  .range-score {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  /* NOTE */
+  .note-box {
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    background: #1a1f0a;
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 40px;
+  }
+
+  .note-box p {
+    font-size: 14px;
+    color: #cccccc;
+    line-height: 1.7;
+  }
+
+  .note-box p + p { margin-top: 10px; }
+
+  /* RESTART */
+  .btn-restart {
+    display: inline-block;
+    padding: 12px 36px;
+    background: transparent;
+    color: var(--mid);
+    border: 1.5px solid var(--border);
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+
+  .btn-restart:hover {
+    border-color: var(--dark);
+    color: var(--dark);
+  }
+
+  /* Error */
+  .error-msg {
+    color: #C0392B;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" style="width:0%"></div>
+
+<div id="testForm">
+  <div style="height:32px"></div>
+
+  <!-- INSTRUCTIONS -->
+  <div class="instructions">
+    <div class="instructions-box">
+      <h3>Antes de empezar</h3>
+      <p>Este test tiene dos partes. La <strong>primera parte</strong> tiene 10 preguntas sobre tus fortalezas naturales — cómo funcionas cuando estás en tu mejor versión. La <strong>segunda parte</strong> tiene 10 preguntas sobre tus sombras — los patrones que aparecen cuando tu energía está en exceso o en desequilibrio.</p>
+      <p>En cada pregunta elige la opción que más se parezca a ti en la mayoría de los casos. No la que quisieras que fuera verdad — la que realmente es.</p>
+      <div class="rules">
+        <div class="rule"><div class="rule-num">1</div><span>Elige según cómo eres, no según cómo quisieras ser</span></div>
+        <div class="rule"><div class="rule-num">2</div><span>Si dudas entre dos opciones, quédate con la que primero te generó reconocimiento</span></div>
+        <div class="rule"><div class="rule-num">3</div><span>No hay respuestas correctas ni incorrectas — todas las energías son válidas</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">Parte 1 — Preguntas 1 a 10</div>
+        <div class="section-title">Tus Fortalezas</div>
+        <div class="section-subtitle">¿Cómo funcionas cuando estás en tu mejor versión?</div>
+      </div>
+    </div>
+    <div class="questions-list" id="part1"></div>
+  </div>
+
+  <!-- PART 2 -->
+  <div class="section section-2">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">Parte 2 — Preguntas 11 a 20</div>
+        <div class="section-title">Tus Sombras</div>
+        <div class="section-subtitle">¿Qué patrones aparecen cuando tu energía está en exceso o desequilibrio?</div>
+      </div>
+    </div>
+    <div class="questions-list" id="part2"></div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-area">
+    <div class="progress-text">Respondidas: <span class="progress-count" id="answeredCount">0</span> de 20</div>
+    <button class="btn-submit" id="submitBtn" onclick="showResults()" disabled>Ver mi perfil elemental</button>
+    <div class="error-msg" id="errorMsg">Por favor responde todas las preguntas antes de continuar.</div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results">
+  <div class="results-header">
+    <div class="eyebrow">Tu resultado</div>
+    <h2>Tu Perfil <em style="font-style:italic; color:var(--accent)">Elemental</em></h2>
+    <div class="divider"></div>
+    <p>Esto es lo que descubriste sobre ti misma hoy</p>
+  </div>
+
+  <div class="scores-grid" id="scoresGrid"></div>
+  <div class="profile-result" id="profileResult"></div>
+
+  <div class="ranges-box">
+    <h3>Rangos de referencia</h3>
+    <table class="ranges-table">
+      <thead>
+        <tr>
+          <th>Puntaje</th>
+          <th>Qué significa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="range-score">12 o más</td><td>Energía muy dominante — define fuertemente tu forma de operar</td></tr>
+        <tr><td class="range-score">7 a 11</td><td>Energía presente y activa</td></tr>
+        <tr><td class="range-score">4 a 6</td><td>Energía de apoyo — aparece en contextos específicos</td></tr>
+        <tr><td class="range-score">0 a 3</td><td>Zona de desarrollo — energía poco habitada, área de crecimiento real</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note-box">
+    <p>Tu elemento dominante no es una etiqueta — es un punto de partida. No significa que solo puedes operar desde esa energía. Significa que es tu base natural — desde donde más fluyes, más rindes y más te reconoces.</p>
+    <p>Tu zona de desarrollo tampoco es una debilidad — es una invitación. La energía que menos habitas suele ser exactamente la que necesitas para superar los bloqueos que más se repiten en tu vida.</p>
+  </div>
+
+  <div style="text-align:center">
+    <button class="btn-restart" onclick="restart()">Volver a empezar</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  // PARTE 1
+  {
+    num: 1,
+    text: "Cuando tienes un objetivo claro, ¿cómo arrancas?",
+    options: [
+      { letter: "A", text: "Arranco sola y rápido — la acción me genera más claridad que la planificación" },
+      { letter: "B", text: "Me tomo el tiempo de organizar bien antes de empezar — el orden me da seguridad" },
+      { letter: "C", text: "Necesito conectar con el propósito antes de moverme — el para qué me activa" },
+      { letter: "D", text: "Empiezo explorando y generando ideas — el proceso de pensar me orienta" }
+    ]
+  },
+  {
+    num: 2,
+    text: "¿Cuál es tu mayor fortaleza a la hora de trabajar?",
+    options: [
+      { letter: "A", text: "La capacidad de tomar acción aunque no tenga todo resuelto" },
+      { letter: "B", text: "La consistencia — cuando me comprometo, cumplo sin importar las circunstancias" },
+      { letter: "C", text: "La profundidad — cuando algo me importa, le entrego todo lo que tengo" },
+      { letter: "D", text: "La creatividad — veo conexiones y posibilidades que otros no ven fácilmente" }
+    ]
+  },
+  {
+    num: 3,
+    text: "¿Cómo tomas decisiones importantes?",
+    options: [
+      { letter: "A", text: "Confío en mi instinto y decido rápido — la indecisión me agota más que equivocarme" },
+      { letter: "B", text: "Necesito información completa y tiempo para analizar bien antes de moverme" },
+      { letter: "C", text: "Escucho lo que siento — si algo no resuena internamente, no lo hago" },
+      { letter: "D", text: "Investigo, comparo perspectivas y conecto ideas hasta que algo tiene sentido" }
+    ]
+  },
+  {
+    num: 4,
+    text: "Cuando lograste algo importante, ¿qué frase describe mejor lo que sentiste?",
+    options: [
+      { letter: "A", text: "\"Lo hice. Ahora ¿qué sigue?\" — el logro me activa para lo próximo" },
+      { letter: "B", text: "\"Construí algo sólido. Valió cada paso.\" — la solidez del resultado me satisface" },
+      { letter: "C", text: "\"El camino fue tan importante como el resultado.\" — el proceso me nutrió profundamente" },
+      { letter: "D", text: "\"Aprendí mucho — ya sé cómo hacerlo diferente la próxima vez.\" — el aprendizaje es el premio" }
+    ]
+  },
+  {
+    num: 5,
+    text: "¿Qué describe mejor tu estilo natural de influencia?",
+    options: [
+      { letter: "A", text: "Inspiro con energía y acción — lidero desde el ejemplo y el movimiento" },
+      { letter: "B", text: "Genero confianza con constancia — las personas saben que pueden contar conmigo" },
+      { letter: "C", text: "Conecto emocionalmente — las personas sienten que las veo y las comprendo" },
+      { letter: "D", text: "Aporto ideas y visión — ayudo a ver lo que todavía no existe" }
+    ]
+  },
+  {
+    num: 6,
+    text: "Cuando trabajas en algo que realmente te apasiona, ¿cómo es tu energía?",
+    options: [
+      { letter: "A", text: "Intensa y concentrada — puedo trabajar horas sin parar cuando algo me enciende" },
+      { letter: "B", text: "Constante y sostenida — avanzo con ritmo parejo sin necesitar picos de emoción" },
+      { letter: "C", text: "Fluida y profunda — entro en un estado de flow que conecta mente y emoción" },
+      { letter: "D", text: "Dispersa y expansiva — salto entre ideas y ángulos porque todo me parece interesante" }
+    ]
+  },
+  {
+    num: 7,
+    text: "¿Cuál es tu mayor fortaleza en un equipo o proyecto colaborativo?",
+    options: [
+      { letter: "A", text: "Pongo en movimiento lo que otros están pensando — soy quien da el primer paso" },
+      { letter: "B", text: "Sostengo la estructura — me aseguro de que las cosas se hagan como se acordaron" },
+      { letter: "C", text: "Cuido el clima emocional — noto cuando algo no está bien antes de que se diga" },
+      { letter: "D", text: "Genero las ideas que nadie había pensado — conectar conceptos distintos es natural en mí" }
+    ]
+  },
+  {
+    num: 8,
+    text: "¿Cómo describes tu relación con los cambios inesperados?",
+    options: [
+      { letter: "A", text: "Me adapto rápido — los cambios no me frenan, me activan" },
+      { letter: "B", text: "Los proceso con calma si tengo tiempo — prefiero los cambios planificados" },
+      { letter: "C", text: "Depende del impacto emocional — si el cambio afecta algo importante, necesito procesarlo" },
+      { letter: "D", text: "Los veo como oportunidades — un cambio puede abrir algo mejor de lo que había" }
+    ]
+  },
+  {
+    num: 9,
+    text: "Cuando tienes que aprender algo nuevo, ¿cómo lo haces mejor?",
+    options: [
+      { letter: "A", text: "Haciéndolo directamente — aprendo en acción, no estudiando en abstracto" },
+      { letter: "B", text: "Con instrucciones claras y paso a paso — necesito saber exactamente qué hacer" },
+      { letter: "C", text: "Desde la experiencia y la conexión — aprendo mejor cuando hay significado personal" },
+      { letter: "D", text: "Explorando y conectando — me gusta entender el contexto y las relaciones entre ideas" }
+    ]
+  },
+  {
+    num: 10,
+    text: "¿Qué frase describe mejor cómo usas tu energía a lo largo del día?",
+    options: [
+      { letter: "A", text: "La uso al máximo cuando estoy activada — prefiero intensidad sobre constancia" },
+      { letter: "B", text: "La administro con cuidado — un ritmo constante me rinde más que los extremos" },
+      { letter: "C", text: "La cuido según cómo me siento — mi estado interno define cuánto puedo dar" },
+      { letter: "D", text: "Varía según el estímulo — lo nuevo me activa, lo repetitivo me apaga rápido" }
+    ]
+  },
+  // PARTE 2
+  {
+    num: 11,
+    text: "Cuando estás bajo presión, ¿cuál de estos patrones aparece más en ti?",
+    options: [
+      { letter: "A", text: "Me vuelvo impulsiva — tomo decisiones apresuradas o digo cosas que después lamento" },
+      { letter: "B", text: "Me paralizo — necesito tenerlo todo bajo control y si no puedo, no me muevo" },
+      { letter: "C", text: "Me derrumbo emocionalmente — un comentario o una situación difícil puede tumbar mi día" },
+      { letter: "D", text: "Me disperso — abro mil pestañas mentales y no puedo cerrar ninguna" }
+    ]
+  },
+  {
+    num: 12,
+    text: "¿Cuál de estos reproches te has hecho a ti misma con más frecuencia?",
+    options: [
+      { letter: "A", text: "\"Empecé demasiadas cosas y no terminé ninguna.\"" },
+      { letter: "B", text: "\"Sé que está bien pero no puedo soltar — siempre le encuentro algo más que mejorar.\"" },
+      { letter: "C", text: "\"Debería haber actuado antes en lugar de esperar a sentirme lista.\"" },
+      { letter: "D", text: "\"Llevo semanas planeando esto y todavía no empecé a ejecutar.\"" }
+    ]
+  },
+  {
+    num: 13,
+    text: "Cuando algo no sale como esperabas, ¿cuál es tu reacción más automática?",
+    options: [
+      { letter: "A", text: "Explotar o reaccionar con más intensidad de la que la situación merece" },
+      { letter: "B", text: "Cerrarse — me cuesta recibir feedback o aceptar que algo salió mal" },
+      { letter: "C", text: "Hundirme — lo tomo de forma muy personal aunque no haya sido para mí" },
+      { letter: "D", text: "Saltar a la siguiente idea en lugar de procesar lo que pasó" }
+    ]
+  },
+  {
+    num: 14,
+    text: "¿Cuál de estas situaciones te genera más resistencia?",
+    options: [
+      { letter: "A", text: "Hacer tareas repetitivas, administrativas o que no me desafían" },
+      { letter: "B", text: "Lanzar algo sin estar completamente segura de que está perfecto" },
+      { letter: "C", text: "Actuar cuando no me siento emocionalmente lista o bien internamente" },
+      { letter: "D", text: "Ejecutar una tarea de forma lineal y sostenida sin poder explorar otras direcciones" }
+    ]
+  },
+  {
+    num: 15,
+    text: "En tus relaciones de trabajo o colaboración, ¿cuál de estos patrones reconoces en ti?",
+    options: [
+      { letter: "A", text: "Tiendo a imponer mi ritmo o mis decisiones sin consultar suficiente a otros" },
+      { letter: "B", text: "Me cuesta delegar — prefiero hacerlo yo misma para asegurarme de que quede bien" },
+      { letter: "C", text: "A veces priorizo las necesidades de otros sobre las mías hasta agotarme" },
+      { letter: "D", text: "Me entusiasmo con proyectos nuevos pero pierdo el interés cuando dejan de ser estimulantes" }
+    ]
+  },
+  {
+    num: 16,
+    text: "¿Cuál de estos pensamientos aparece más seguido en tu cabeza?",
+    options: [
+      { letter: "A", text: "\"Tengo que hacer más, lograr más, moverme más rápido.\"" },
+      { letter: "B", text: "\"Todavía no está listo. Necesita un poco más de trabajo.\"" },
+      { letter: "C", text: "\"No sé si estoy lista para esto. ¿Y si no sale bien?\"" },
+      { letter: "D", text: "\"Hay una forma mejor de hacer esto — solo necesito pensarlo un poco más.\"" }
+    ]
+  },
+  {
+    num: 17,
+    text: "Cuando tu energía está agotada, ¿cómo se ve eso en tu productividad?",
+    options: [
+      { letter: "A", text: "Sigo forzándome a avanzar aunque el cuerpo ya no da — no sé cuándo parar" },
+      { letter: "B", text: "Me quedo inmóvil — el agotamiento me paraliza completamente y no puedo moverme" },
+      { letter: "C", text: "Desaparezco emocionalmente — me desconecto de todo y de todos hasta recuperarme" },
+      { letter: "D", text: "Salto de tarea en tarea sin profundizar en ninguna — mucho movimiento, poco avance" }
+    ]
+  },
+  {
+    num: 18,
+    text: "¿Cuál de estas sombras reconoces como tu patrón más recurrente?",
+    options: [
+      { letter: "A", text: "El exceso de actividad — hago tanto que a veces no sé para qué estoy corriendo" },
+      { letter: "B", text: "El exceso de control — me cuesta confiar en que algo puede salir bien sin mi supervisión" },
+      { letter: "C", text: "El exceso de sensibilidad — las emociones a veces pesan más de lo que me gustaría" },
+      { letter: "D", text: "El exceso de ideas — genero tanto que me cuesta aterrizar y ejecutar algo concreto" }
+    ]
+  },
+  {
+    num: 19,
+    text: "En los momentos en que más has procrastinado, ¿cuál fue el patrón dominante?",
+    options: [
+      { letter: "A", text: "Empecé algo nuevo en lugar de terminar lo que tenía pendiente" },
+      { letter: "B", text: "Seguí revisando y mejorando algo que ya estaba listo para salir" },
+      { letter: "C", text: "Esperé a sentirme en el estado emocional correcto — que nunca llegó" },
+      { letter: "D", text: "Seguí investigando y planeando en lugar de empezar a ejecutar" }
+    ]
+  },
+  {
+    num: 20,
+    text: "¿Cuál de estas frases describe mejor tu mayor desafío productivo actual?",
+    options: [
+      { letter: "A", text: "Sostener el ritmo en lo rutinario y terminar lo que empiezo" },
+      { letter: "B", text: "Soltar el control y avanzar aunque no tenga todo perfectamente claro" },
+      { letter: "C", text: "Actuar cuando hay una emoción incómoda o cuando no me siento lista" },
+      { letter: "D", text: "Cerrar el ciclo de planificación y pasar a la ejecución concreta" }
+    ]
+  }
+];
+
+const profiles = {
+  A: {
+    emoji: "🔥",
+    name: "Fuego",
+    cls: "fuego",
+    tagline: "La mujer que enciende lo que otros solo imaginan",
+    dominantDesc: "Tu mayor fortaleza es que empiezas. Eres la mujer que actúa — y eso es extraordinario.",
+    desarrolloLabel: "Zona de desarrollo"
+  },
+  B: {
+    emoji: "🌱",
+    name: "Tierra",
+    cls: "tierra",
+    tagline: "La mujer que construye para quedarse",
+    dominantDesc: "Tu mayor fortaleza es que lo que construyes dura. La consistencia real es uno de los superpoderes más subestimados.",
+    desarrolloLabel: "Zona de desarrollo"
+  },
+  C: {
+    emoji: "🌊",
+    name: "Agua",
+    cls: "agua",
+    tagline: "La mujer que siente profundo y crea desde adentro",
+    dominantDesc: "Tu mayor fortaleza es la profundidad con la que vives y creas. Cuando estás alineada, tu trabajo tiene alma.",
+    desarrolloLabel: "Zona de desarrollo"
+  },
+  D: {
+    emoji: "🌬",
+    name: "Aire",
+    cls: "aire",
+    tagline: "La mujer que ve lo que todavía no existe",
+    dominantDesc: "Tu mayor fortaleza es la capacidad de ver posibilidades donde otros ven obstáculos. Tu mente conecta lo que nadie más conecta.",
+    desarrolloLabel: "Zona de desarrollo"
+  }
+};
+
+let answers = {};
+
+function buildQuestions() {
+  const part1 = document.getElementById('part1');
+  const part2 = document.getElementById('part2');
+
+  questions.forEach((q, idx) => {
+    const container = idx < 10 ? part1 : part2;
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `card-${q.num}`;
+
+    const optionsHTML = q.options.map(opt => `
+      <label class="option" id="opt-${q.num}-${opt.letter}" onclick="selectOption(${q.num}, '${opt.letter}')">
+        <input type="radio" name="q${q.num}" value="${opt.letter}">
+        <div class="option-letter">${opt.letter}</div>
+        <div class="option-text">${opt.text}</div>
+      </label>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="question-num">Pregunta ${q.num}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options">${optionsHTML}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectOption(qNum, letter) {
+  // Deselect all options for this question
+  questions[qNum - 1].options.forEach(opt => {
+    const el = document.getElementById(`opt-${qNum}-${opt.letter}`);
+    if (el) el.classList.remove('selected');
+  });
+
+  // Select chosen
+  const chosen = document.getElementById(`opt-${qNum}-${letter}`);
+  if (chosen) chosen.classList.add('selected');
+
+  // Mark card answered
+  const card = document.getElementById(`card-${qNum}`);
+  if (card) card.classList.add('answered');
+
+  answers[qNum] = letter;
+  updateProgress();
+}
+
+function updateProgress() {
+  const count = Object.keys(answers).length;
+  document.getElementById('answeredCount').textContent = count;
+  document.getElementById('progressBar').style.width = (count / 20 * 100) + '%';
+  document.getElementById('submitBtn').disabled = count < 20;
+}
+
+function showResults() {
+  if (Object.keys(answers).length < 20) {
+    document.getElementById('errorMsg').style.display = 'block';
+    return;
+  }
+
+  // Count scores
+  const scores = { A: 0, B: 0, C: 0, D: 0 };
+  Object.values(answers).forEach(v => scores[v]++);
+
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const dominant = sorted[0][0];
+  const desarrollo = sorted[sorted.length - 1][0];
+
+  // Build scores grid
+  const scoresGrid = document.getElementById('scoresGrid');
+  const order = ['A', 'C', 'D', 'B'];
+  const elementKeys = { A: 'fuego', B: 'tierra', C: 'agua', D: 'aire' };
+
+  order.forEach(key => {
+    const prof = profiles[key];
+    const score = scores[key];
+    const pct = (score / 20) * 100;
+    const isDom = key === dominant;
+    const isDes = key === desarrollo;
+
+    const card = document.createElement('div');
+    card.className = `score-card ${prof.cls}${isDom ? ' dominant' : ''}`;
+    card.innerHTML = `
+      <div class="score-badge">${isDom ? '✦ Dominante' : isDes ? '◌ Desarrollo' : 'Presente'}</div>
+      <div class="score-emoji">${prof.emoji}</div>
+      <div class="score-element">${prof.name}</div>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:0%" data-pct="${pct}"></div></div>
+      <div class="score-num">${score}</div>
+      <div class="score-label">de 20 puntos</div>
+      ${isDom ? '<span class="dominant-tag">Tu elemento</span>' : ''}
+      ${isDes ? '<span class="desarrollo-tag">Zona de desarrollo</span>' : ''}
+    `;
+    scoresGrid.appendChild(card);
+  });
+
+  // Build profile result
+  const domProfile = profiles[dominant];
+  const desProfile = profiles[desarrollo];
+  document.getElementById('profileResult').innerHTML = `
+    <h3>Tu perfil elemental es</h3>
+    <div class="profile-name">${domProfile.emoji} ${domProfile.name}</div>
+    <div class="profile-tagline">${domProfile.tagline}</div>
+    <div class="profile-fields">
+      <div class="profile-field">
+        <div class="field-label">Elemento dominante</div>
+        <div class="field-value">${domProfile.emoji} ${domProfile.name}</div>
+      </div>
+      <div class="profile-field">
+        <div class="field-label">Zona de desarrollo</div>
+        <div class="field-value">${desProfile.emoji} ${desProfile.name}</div>
+      </div>
+    </div>
+  `;
+
+  // Show results
+  document.getElementById('testForm').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('.score-bar').forEach(bar => {
+      bar.style.width = bar.dataset.pct + '%';
+    });
+  }, 300);
+}
+
+function restart() {
+  answers = {};
+  document.getElementById('scoresGrid').innerHTML = '';
+  document.getElementById('profileResult').innerHTML = '';
+  document.getElementById('part1').innerHTML = '';
+  document.getElementById('part2').innerHTML = '';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('testForm').style.display = 'block';
+  document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('answeredCount').textContent = '0';
+  document.getElementById('submitBtn').disabled = true;
+  buildQuestions();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+buildQuestions();
+</script>
+</body>
+</html>
